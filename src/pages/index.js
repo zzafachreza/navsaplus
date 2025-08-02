@@ -47,12 +47,24 @@ import BarangCart from './Barang/BarangCart';
 import Checkout from './Checkout';
 import ProdukDetail from './ProdukDetail';
 import DetailRiwayat from './DetailRiwayat';
+import Buah from './Home/Buah';
+import Brondol from './Home/Brondol';
+import BuahAdd from './Home/BuahAdd';
+import BuahEdit from './Home/BuahEdit';
+import BrondolEdit from './Home/BrondolEdit';
+import BrondolAdd from './Home/BrondolAdd';
 
 // NEW
 
 export {
   Splash,
   Profit,
+  Buah,
+  BuahAdd,
+  BuahEdit,
+  Brondol,
+  BrondolEdit,
+  BrondolAdd,
   Pelanggan,
   PelangganEdit,
   PelangganAdd,
@@ -97,10 +109,7 @@ export {
   DataLaporan,
   BackupRestore,
   Royalti,
-Checkout,
-ProdukDetail,
-DetailRiwayat,
-
-
-
+  Checkout,
+  ProdukDetail,
+  DetailRiwayat,
 };

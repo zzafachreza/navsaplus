@@ -1,18 +1,14 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import { colors, fonts } from '../../utils';
-import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {colors, fonts} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
+import {Icon} from 'react-native-elements';
 
 export default function MyHeader({
   onPress,
   color = colors.white,
   title,
+  backgroundColor = colors.primary,
   icon = false,
   iconname = 'search',
 }) {
@@ -25,10 +21,9 @@ export default function MyHeader({
         alignItems: 'center',
         paddingVertical: 16,
         paddingHorizontal: 20,
-        backgroundColor: colors.primary,
+        backgroundColor: backgroundColor,
         justifyContent: 'space-between',
       }}>
-
       {/* Tombol Back */}
       <TouchableOpacity
         onPress={() => navigation.goBack()}
@@ -38,11 +33,16 @@ export default function MyHeader({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Icon type="ionicon" name="arrow-back-outline" size={22} color={color} />
+        <Icon
+          type="ionicon"
+          name="arrow-back-outline"
+          size={22}
+          color={color}
+        />
       </TouchableOpacity>
 
       {/* Judul */}
-      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+      <View style={{flex: 1, paddingHorizontal: 10}}>
         <Text
           style={{
             ...fonts.headline5,

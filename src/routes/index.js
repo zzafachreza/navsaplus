@@ -102,6 +102,12 @@ import {
   Checkout,
   ProdukDetail,
   DetailRiwayat,
+  Buah,
+  Brondol,
+  BuahAdd,
+  BuahEdit,
+  BrondolAdd,
+  BrondolEdit,
 } from '../pages';
 import {colors} from '../utils';
 import {Icon} from 'react-native-elements';
@@ -125,10 +131,57 @@ const MainApp = () => {
 
 export default function Router() {
   return (
-    <Stack.Navigator initialRouteName="MainApp">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={Splash}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Buah"
+        component={Buah}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BuahAdd"
+        component={BuahAdd}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BuahEdit"
+        component={BuahEdit}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Brondol"
+        component={Brondol}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BrondolAdd"
+        component={BrondolAdd}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BrondolEdit"
+        component={BrondolEdit}
         options={{
           headerShown: false,
         }}
@@ -142,7 +195,6 @@ export default function Router() {
         }}
       />
 
-
       <Stack.Screen
         name="CheckOut"
         component={Checkout}
@@ -151,7 +203,6 @@ export default function Router() {
         }}
       />
 
-      
       <Stack.Screen
         name="ProdukDetail"
         component={ProdukDetail}
@@ -159,8 +210,6 @@ export default function Router() {
           headerShown: false,
         }}
       />
-
-
 
       <Stack.Screen
         name="PelangganAdd"

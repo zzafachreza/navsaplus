@@ -1,0 +1,212 @@
+[
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "A-35",
+    "tt": 2010,
+    "ha": 11.75
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "A-36",
+    "tt": 2010,
+    "ha": 14.74
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "A-37",
+    "tt": 2010,
+    "ha": 20.35
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "A-38",
+    "tt": 2010,
+    "ha": 23.55
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "A-39",
+    "tt": 2010,
+    "ha": 7.83
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-37",
+    "tt": 2010,
+    "ha": 3.85
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-36",
+    "tt": 2010,
+    "ha": 21.18
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-35",
+    "tt": 2010,
+    "ha": 25.58
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-34",
+    "tt": 2010,
+    "ha": 15.61
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-33",
+    "tt": 2010,
+    "ha": 17.16
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-32",
+    "tt": 2010,
+    "ha": 12.77
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "B-31",
+    "tt": 2010,
+    "ha": 19.76
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "D-33",
+    "tt": 2010,
+    "ha": 4.92
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "D-32",
+    "tt": 2010,
+    "ha": 5.17
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 10G02",
+    "blok": "D-31",
+    "tt": 2010,
+    "ha": 11.39
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-31",
+    "tt": 2012,
+    "ha": 37.45
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-32",
+    "tt": 2012,
+    "ha": 38.3
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-33",
+    "tt": 2012,
+    "ha": 26.29
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-34",
+    "tt": 2012,
+    "ha": 22.01
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-35",
+    "tt": 2012,
+    "ha": 8.31
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "C-36",
+    "tt": 2012,
+    "ha": 4.3
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "D-40",
+    "tt": 2012,
+    "ha": 10.44
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "D-39",
+    "tt": 2012,
+    "ha": 22.12
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "D-38",
+    "tt": 2012,
+    "ha": 22.16
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "D-37",
+    "tt": 2012,
+    "ha": 21.29
+  },
+  {
+    "divisi": "SWTA 1",
+    "komplek": "SWTA 12G03",
+    "blok": "D-36",
+    "tt": 2012,
+    "ha": 6.37
+  },
+  {
+    "divisi": "SWTA 2",
+    "komplek": "SWTA14G05",
+    "blok": "A-01",
+    "tt": 2014,
+    "ha": 25.1
+  },
+  {
+    "divisi": "SWTA 2",
+    "komplek": "SWTA14G05",
+    "blok": "A-02",
+    "tt": 2014,
+    "ha": 14.67
+  },
+  {
+    "divisi": "SWTA 2",
+    "komplek": "SWTA14G05",
+    "blok": "B-01",
+    "tt": 2014,
+    "ha": 34.25
+  },
+  {
+    "divisi": "SWTA 2",
+    "komplek": "SWTA14G05",
+    "blok": "B-02",
+    "tt": 2014,
+    "ha": 28.4
+  }
+]

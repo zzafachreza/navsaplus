@@ -17,6 +17,7 @@ export default function MyPicker({
   label,
   iconname,
   onChangeText,
+  filter = true,
   value = '', // Pastikan value punya default value
   data = [],
 }) {
@@ -78,14 +79,14 @@ export default function MyPicker({
           setModalVisible(true);
           setDataList(data);
         }}>
-        <View style={styles.iconContainer}>
+        {/* <View style={styles.iconContainer}>
           <Icon
             type="ionicon"
             name={iconname}
             color={Color.blueGray[300]}
             size={24}
           />
-        </View>
+        </View> */}
         {/* Menampilkan nilai yang dipilih atau teks placeholder */}
         <Text style={styles.selectedText}>
           {selectedItem ? selectedItem.label : 'Silahkan pilih'}
@@ -108,16 +109,18 @@ export default function MyPicker({
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
               <View style={styles.modalContainer}>
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                  }}>
-                  <MyInput
-                    nolabel
-                    placeholder="Pencarian . . ."
-                    onChangeText={x => filterPicker(x)}
-                  />
-                </View>
+                {filter && (
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                    }}>
+                    <MyInput
+                      nolabel
+                      placeholder="Pencarian . . ."
+                      onChangeText={x => filterPicker(x)}
+                    />
+                  </View>
+                )}
                 <FlatList
                   data={dataList}
                   renderItem={renderItem}

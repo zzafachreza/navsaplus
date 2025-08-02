@@ -11,11 +11,13 @@ import axios from 'axios';
 import {apiURL, storeData} from '../../utils/localStorage';
 import MyLoading from '../../components/MyLoading';
 import {TouchableOpacity} from 'react-native';
-import { Image } from 'react-native';
+import {Image} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native';
+import {Pressable} from 'react-native';
 export default function Login({navigation, route}) {
   const [kirim, setKirim] = useState({
-    username: '',
-    password: '',
+    nomor_krani: '',
+    nama_krani: '',
   });
 
   const toast = useToast();
@@ -27,99 +29,96 @@ export default function Login({navigation, route}) {
   };
   const [loading, setLoading] = useState(false);
   const sendData = () => {
-    if (kirim.username.length == 0) {
-      toast.show('Username masih kosong !');
-    } else if (kirim.password.length == 0) {
-      toast.show('Kata sandi masih kosong !');
+    if (kirim.nomor_krani.length == 0) {
+      toast.show('No. Induk krani panen masih kosong !');
+    } else if (kirim.nama_krani.length == 0) {
+      toast.show('Nama krani panen masih kosong !');
     } else {
       console.log(kirim);
       setLoading(true);
-      axios.post(apiURL + 'login', kirim).then(res => {
-        setTimeout(() => {
-          setLoading(false);
-          if (res.data.status == 200) {
-            storeData('user', res.data.data);
-            navigation.replace('MainApp');
-          } else {
-            toast.show(res.data.message);
-          }
-        }, 700);
-      });
+      setTimeout(() => {
+        setLoading(false);
+        storeData('user', kirim);
+        navigation.replace('MainApp');
+      }, 500);
     }
   };
   return (
-    <View
-      style={{flex: 1, backgroundColor: colors.white, flexDirection: 'column'}}>
+    <View style={{flex: 1, backgroundColor: colors.white}}>
       <View
         style={{
-          flex: 0.5,
+          // flex: 0.5,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image
           source={require('../../assets/logo.png')}
           style={{
-            width: 250,
-            height: 250,
+            width: 200,
+            height: 200,
           }}
         />
       </View>
+
       <View
         style={{
           flex: 1,
-          justifyContent: 'flex-start',
-          backgroundColor: colors.white,
-          paddingHorizontal: 20,
+          padding: 20,
         }}>
-        <Text
+        <Pressable
+          onPress={() => navigation.navigate('Buah')}
           style={{
-            marginBottom: 20,
-            fontFamily: fonts.secondary[800],
-            fontSize: 30,
-          }}>
-          Masuk
-        </Text>
-
-        <MyInput
-          value={kirim.username}
-          onChangeText={x => updateKirim('username', x)}
-          label="Username"
-          placeholder="Masukan username"
-          iconname="at"
-        />
-
-        <MyInput
-          value={kirim.password}
-          onChangeText={x => updateKirim('password', x)}
-          label="Kata Sandi"
-          placeholder="Masukan kata sandi"
-          iconname="lock-closed-outline"
-          secureTextEntry
-        />
-        <MyGap jarak={20} />
-        {!loading && <MyButton onPress={sendData} title="MASUK" />}
-        {loading && <MyLoading />}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          style={{
-            marginTop: 10,
+            marginVertical: 10,
+            padding: 10,
+            backgroundColor: colors.white,
+            borderWidth: 3,
+            borderColor: colors.primary,
+            borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 15,
           }}>
+          <FastImage
+            source={require('../../assets/a1.png')}
+            style={{
+              width: 120,
+              height: 120,
+            }}
+          />
           <Text
             style={{
-              fontFamily: fonts.secondary[600],
-              fontSize: 14,
+              fontFamily: fonts.secondary[800],
+              fontSize: 30,
+              color: colors.primary,
             }}>
-            Belum punya akun ?{' '}
-            <Text
-              style={{
-                color: colors.primary,
-                fontFamily: fonts.secondary[800],
-              }}>
-              Daftar disini
-            </Text>
+            TPH
+          </Text>
+        </Pressable>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Brondol')}
+          style={{
+            marginVertical: 10,
+            padding: 10,
+            backgroundColor: colors.white,
+            borderWidth: 3,
+            borderColor: colors.secondary,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <FastImage
+            source={require('../../assets/a2.png')}
+            style={{
+              width: 120,
+              height: 120,
+            }}
+          />
+          <Text
+            style={{
+              fontFamily: fonts.secondary[800],
+              fontSize: 30,
+              color: colors.secondary,
+            }}>
+            BRONDOL
           </Text>
         </TouchableOpacity>
       </View>
