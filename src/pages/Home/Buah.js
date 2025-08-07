@@ -68,13 +68,13 @@ export default function Buah({navigation, route}) {
       // Step 1: Buat worksheet dan workbook
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Transaksi TBH');
+      XLSX.utils.book_append_sheet(wb, ws, 'Transaksi TBS');
 
       // Step 2: Convert ke file excel (biner)
       const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
 
       // Step 3: Simpan ke file (Android/iOS Path)
-      const fileName = `Transaksi_TBH_${Date.now()}.xlsx`;
+      const fileName = `Transaksi_TBS_${Date.now()}.xlsx`;
       const path = `${RNFS.DownloadDirectoryPath}/${fileName}`;
       await RNFS.writeFile(path, wbout, 'ascii');
 
@@ -156,7 +156,7 @@ export default function Buah({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MyHeader title="Hasil Transaksi TBH" />
+      <MyHeader title="Hasil Transaksi TBS" />
       <View style={styles.content}>
         <MyCalendar
           label="Filter Tanggal"

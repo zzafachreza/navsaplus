@@ -83,7 +83,7 @@ export default function BuahAdd({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MyHeader title="Tambah Transaksi TBH" />
+      <MyHeader title="Tambah Transaksi TBS" />
       <View style={styles.innerContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <MyCalendar

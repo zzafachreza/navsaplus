@@ -74,7 +74,7 @@ export default function BuahEdit({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MyHeader title="Edit Transaksi TBH" />
+      <MyHeader title="Edit Transaksi TBS" />
       <View style={styles.innerContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <MyCalendar

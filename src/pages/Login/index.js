@@ -90,7 +90,7 @@ export default function Login({navigation, route}) {
               fontSize: 30,
               color: colors.primary,
             }}>
-            TPH
+            TBS
           </Text>
         </Pressable>
         <TouchableOpacity
