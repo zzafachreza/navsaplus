@@ -31,21 +31,29 @@ export default function BuahEdit({navigation, route}) {
   const [loading, setLoading] = useState(false);
   const [kirim, setKirim] = useState(route.params);
 
+  // Debug log untuk melihat data yang diterima
+  useEffect(() => {
+    console.log('Data yang diterima di BuahEdit:', route.params);
+    console.log('Kirim state:', kirim);
+    
+    // Pastikan data ter-set dengan benar
+    if (route.params) {
+      setKirim({
+        ...route.params,
+        // Pastikan semua field numeric dalam format yang benar
+        jjg: route.params.jjg || 0,
+        mentah: route.params.mentah || 0,
+        tph: route.params.tph || 1,
+      });
+    }
+  }, [route.params]);
+
   const updateKirim = (key, value) => {
     setKirim({
       ...kirim,
       [key]: value,
     });
   };
-
-  useEffect(() => {
-    // Dummy effect, can be removed or expanded as needed
-    // Example: Prepare data if needed
-    // let blok = DATA_BLOK.map(i => ({
-    //   value: i.divisi,
-    //   label: i.divisi,
-    // }));
-  }, []);
 
   const sendData = async () => {
     try {
@@ -88,15 +96,23 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Divisi"
+                value={kirim.divisi}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
                     divisi: x,
                     komplek: '',
+                    blok: '',
+                    mandor: '',
+                    krani: '',
+                    pemanen: '',
                   });
                 }}
                 data={[
                   {value: '', label: 'Pilih Divisi...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.divisi && !DATA_BLOK.some(item => item.divisi === kirim.divisi) ? 
+                    [{value: kirim.divisi, label: `${kirim.divisi} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_BLOK.map(item => [
                       item.divisi,
@@ -110,15 +126,22 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Komplek"
+                value={kirim.komplek}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
                     komplek: x,
                     blok: '',
+                    mandor: '',
+                    krani: '',
+                    pemanen: '',
                   });
                 }}
                 data={[
                   {value: '', label: 'Pilih Komplek...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.komplek && !DATA_BLOK.filter(e => e.divisi === kirim.divisi).some(item => item.komplek === kirim.komplek) ? 
+                    [{value: kirim.komplek, label: `${kirim.komplek} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_BLOK.filter(e => e.divisi === kirim.divisi).map(
                       item => [
@@ -138,15 +161,21 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Blok"
+                value={kirim.blok}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
                     blok: x,
                     mandor: '',
+                    krani: '',
+                    pemanen: '',
                   });
                 }}
                 data={[
                   {value: '', label: 'Pilih Blok...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.blok && !DATA_BLOK.filter(e => e.komplek === kirim.komplek).some(item => item.blok === kirim.blok) ? 
+                    [{value: kirim.blok, label: `${kirim.blok} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_BLOK.filter(e => e.komplek === kirim.komplek).map(
                       item => [item.blok, {value: item.blok, label: item.blok}],
@@ -159,15 +188,20 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Mandor"
+                value={kirim.mandor}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
                     mandor: x,
                     krani: '',
+                    pemanen: '',
                   });
                 }}
                 data={[
                   {value: '', label: 'Pilih Mandor...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.mandor && !DATA_UTAMA.filter(e => e.divisi === kirim.divisi && e.tipe === 'TBH').some(item => item.mandor === kirim.mandor) ? 
+                    [{value: kirim.mandor, label: `${kirim.mandor} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_UTAMA.filter(
                       e => e.divisi === kirim.divisi && e.tipe === 'TBH',
@@ -187,6 +221,7 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Krani"
+                value={kirim.krani}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
@@ -196,6 +231,9 @@ export default function BuahEdit({navigation, route}) {
                 }}
                 data={[
                   {value: '', label: 'Pilih Krani...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.krani && !DATA_UTAMA.filter(e => e.divisi === kirim.divisi && e.tipe === 'TBH' && e.mandor === kirim.mandor).some(item => item.krani === kirim.krani) ? 
+                    [{value: kirim.krani, label: `${kirim.krani} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_UTAMA.filter(
                       e =>
@@ -214,6 +252,7 @@ export default function BuahEdit({navigation, route}) {
               <MyPicker
                 iconname="list"
                 label="Pemanen"
+                value={kirim.pemanen}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
@@ -222,6 +261,9 @@ export default function BuahEdit({navigation, route}) {
                 }}
                 data={[
                   {value: '', label: 'Pilih Pemanen...'},
+                  // Jika ada value, tampilkan sebagai selected
+                  ...(kirim.pemanen && !DATA_UTAMA.filter(e => e.divisi === kirim.divisi && e.tipe === 'TBH' && e.mandor === kirim.mandor).some(item => item.pemanen === kirim.pemanen) ? 
+                    [{value: kirim.pemanen, label: `${kirim.pemanen} (Terpilih)`}] : []),
                   ...new Map(
                     DATA_UTAMA.filter(
                       e =>
@@ -252,16 +294,21 @@ export default function BuahEdit({navigation, route}) {
                 filter={false}
                 iconname="list"
                 label="TPH"
+                value={kirim.tph}
                 onChangeText={x => {
                   setKirim({
                     ...kirim,
                     tph: x,
                   });
                 }}
-                data={Array.from({length: 120}, (_, i) => ({
-                  label: i + 1,
-                  value: i + 1,
-                }))}
+                data={[
+                  // Jika ada value tph yang sudah dipilih, tampilkan sebagai selected
+                  ...(kirim.tph ? [{label: `${kirim.tph} (Terpilih)`, value: kirim.tph}] : []),
+                  ...Array.from({length: 120}, (_, i) => ({
+                    label: i + 1,
+                    value: i + 1,
+                  }))
+                ]}
               />
             </View>
             <View style={styles.flexLeft}>

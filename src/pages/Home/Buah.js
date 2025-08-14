@@ -23,11 +23,12 @@ import * as XLSX from 'xlsx';
 export default function Buah({navigation, route}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState(moment().format('YYYY-MM-DD'));
   const isFocused = useIsFocused();
   const toast = useToast();
 
-  // Ambil data transaksi TBH
-  const getTransaksi = async tgl => {
+  // Ambil data transaksi TBH - PERBAIKAN: tambahkan parameter default
+  const getTransaksi = async (tgl = filter) => {
     try {
       setLoading(true);
       let res = await getData('TBH');
@@ -46,46 +47,177 @@ export default function Buah({navigation, route}) {
     }
   }, [isFocused]);
 
-  const downloadExcel = async () => {
-    try {
-      // Data yang akan di-export, misal data TBH dari state 'data'
-      // Ganti 'data' sesuai variabel kamu
-      let exportData = data.map(item => ({
-        Tanggal: item.tanggal,
-        Divisi: item.divisi,
-        Komplek: item.komplek,
-        Blok: item.blok,
-        Mandor: item.mandor,
-        Krani: item.krani,
-        Pemanen: item.pemanen,
-        Basis: item.basis,
-        TPH: item.tph,
-        JJG: item.jjg,
-        Mentah: item.mentah,
-        Denda: parseFloat(item.mentah || 0) * 10000,
-      }));
-
-      // Step 1: Buat worksheet dan workbook
-      const ws = XLSX.utils.json_to_sheet(exportData);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Transaksi TBS');
-
-      // Step 2: Convert ke file excel (biner)
-      const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
-
-      // Step 3: Simpan ke file (Android/iOS Path)
-      const fileName = `Transaksi_TBS_${Date.now()}.xlsx`;
-      const path = `${RNFS.DownloadDirectoryPath}/${fileName}`;
-      await RNFS.writeFile(path, wbout, 'ascii');
-
-      // // Jika ingin langsung share file:
-      await Share.open({url: `file://${path}`});
-    } catch (error) {
-      console.log(error);
+const downloadExcel = async () => {
+  try {
+    // Cek apakah ada data untuk di-export
+    if (data.length === 0) {
+      toast.show('Tidak ada data untuk di-export', {type: 'warning'});
+      return;
     }
-  };
 
-  // Fungsi hapus transaksi berdasarkan ID
+    console.log('Data yang akan di-export:', data); // Debug log
+
+    // Buat workbook dan worksheet
+    const wb = XLSX.utils.book_new();
+    
+    // Data untuk worksheet - FORMAT SEDERHANA sesuai template baru
+    const wsData = [];
+    
+    // BARIS 1: Header kolom (PERSIS seperti template)
+    wsData.push([
+      'Tanggal',
+      'Divisi', 
+      'Komplek',
+      'Blok',
+      'Mandor',
+      'Krani', 
+      'Pemanen',
+      'Basis',
+      'TPH',
+      'JJG',
+      'Mentah',
+      'Denda'
+    ]);
+    
+    // BARIS 2 dan seterusnya: Data transaksi
+    data.forEach((item) => {
+      // Convert semua angka dengan benar dan handle undefined/null
+      const basis = item.basis ? String(item.basis) : '';
+      const tph = item.tph ? String(item.tph) : '';
+      const jjg = item.jjg ? String(item.jjg) : '0';
+      const mentah = item.mentah ? String(item.mentah) : '0';
+      const dendaValue = (item.mentah && parseInt(item.mentah) > 0) ? String(parseInt(item.mentah) * 10000) : '';
+      
+      wsData.push([
+        item.tanggal || '', // Tanggal (format YYYY-MM-DD)
+        item.divisi || '', // Divisi
+        item.komplek || '', // Komplek  
+        item.blok || '', // Blok
+        item.mandor || '', // Mandor (sudah include NIK - NAMA)
+        item.krani || '', // Krani (sudah include NIK - NAMA)
+        item.pemanen || '', // Pemanen (sudah include NIK - NAMA)
+        basis, // Basis (sebagai string)
+        tph, // TPH (sebagai string)
+        jjg, // JJG (sebagai string)
+        mentah, // Mentah (sebagai string)
+        dendaValue // Denda (sebagai string)
+      ]);
+    });
+
+    console.log('Final Worksheet Data:', wsData); // Debug log
+
+    // Buat worksheet dari array
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    
+    // Set column widths sesuai kebutuhan data
+    ws['!cols'] = [
+      {wch: 15}, // A: Tanggal (diperlebar)
+      {wch: 12}, // B: Divisi
+      {wch: 18}, // C: Komplek
+      {wch: 10}, // D: Blok
+      {wch: 30}, // E: Mandor (NIK - NAMA butuh space lebih)
+      {wch: 30}, // F: Krani (NIK - NAMA butuh space lebih)
+      {wch: 30}, // G: Pemanen (NIK - NAMA butuh space lebih)
+      {wch: 15}, // H: Basis (diperlebar lebih)
+      {wch: 10}, // I: TPH
+      {wch: 12}, // J: JJG
+      {wch: 12}, // K: Mentah
+      {wch: 20}  // L: Denda (diperlebar untuk angka besar)
+    ];
+
+    // Styling untuk header row
+    const headerStyle = {
+      font: { bold: true, name: 'Arial', sz: 11 },
+      alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+      fill: { fgColor: { rgb: 'E0E0E0' } }, // Background abu-abu muda
+      border: {
+        top: { style: 'thin', color: { rgb: '000000' } },
+        bottom: { style: 'thin', color: { rgb: '000000' } },
+        left: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } }
+      }
+    };
+
+    // Styling untuk data rows
+    const dataStyle = {
+      font: { name: 'Arial', sz: 10 },
+      alignment: { horizontal: 'left', vertical: 'center' },
+      border: {
+        top: { style: 'thin', color: { rgb: '000000' } },
+        bottom: { style: 'thin', color: { rgb: '000000' } },
+        left: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } }
+      }
+    };
+
+    // Styling untuk angka
+    const numberStyle = {
+      font: { name: 'Arial', sz: 10 },
+      alignment: { horizontal: 'right', vertical: 'center' },
+      numFmt: '#,##0', // Format angka dengan koma
+      border: {
+        top: { style: 'thin', color: { rgb: '000000' } },
+        bottom: { style: 'thin', color: { rgb: '000000' } },
+        left: { style: 'thin', color: { rgb: '000000' } },
+        right: { style: 'thin', color: { rgb: '000000' } }
+      }
+    };
+
+    // Apply styling ke header (row 1)
+    for (let col = 0; col < 12; col++) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col });
+      if (!ws[cellAddress]) ws[cellAddress] = { t: 's', v: '' };
+      ws[cellAddress].s = headerStyle;
+    }
+
+    // Apply styling ke data rows
+    for (let row = 1; row < wsData.length; row++) {
+      for (let col = 0; col < 12; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+        if (!ws[cellAddress]) ws[cellAddress] = { t: 's', v: '' };
+        
+        // Gunakan data style untuk semua kolom (hindari number formatting yang bermasalah)
+        ws[cellAddress].s = dataStyle;
+      }
+    }
+
+    // Set range untuk print area dan freeze panes
+    ws['!ref'] = XLSX.utils.encode_range({
+      s: { c: 0, r: 0 },
+      e: { c: 11, r: wsData.length - 1 }
+    });
+
+    // Freeze first row (header)
+    ws['!freeze'] = { xSplit: 0, ySplit: 1 };
+
+    // Append worksheet ke workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Transaksi TBS');
+
+    // Generate file Excel
+    const wbout = XLSX.write(wb, { type: 'binary', bookType: 'xls' }); // Ubah ke .xls
+    
+    // Nama file sesuai format client: BPTB_tanggal_divisi.xls
+    const tanggalFormat = moment(filter).format('DDMMYYYY');
+    const divisiData = data[0]?.divisi || 'SWTA';
+    // Clean divisi name (hilangkan space dan karakter khusus)
+    const divisiClean = divisiData.replace(/[^a-zA-Z0-9]/g, '');
+    const fileName = `BPTB_${tanggalFormat}_${divisiClean}.xls`;
+    
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+    await RNFS.writeFile(path, wbout, 'ascii');
+
+    toast.show(`File berhasil disimpan: ${fileName}`, { type: 'success' });
+
+    // Share file
+    await Share.open({ url: `file://${path}` });
+    
+  } catch (error) {
+    console.log('Download Excel Error:', error);
+    toast.show('Gagal membuat file Excel', { type: 'danger' });
+  }
+};
+
+  // PERBAIKAN: Fungsi hapus transaksi berdasarkan ID - panggil getTransaksi dengan filter aktif
   const hapusTransaksi = id => {
     Alert.alert(MYAPP, 'Yakin akan hapus transaksi ini?', [
       {text: 'TIDAK'},
@@ -99,7 +231,8 @@ export default function Buah({navigation, route}) {
             let arrBaru = arr.filter(i => i.id !== id);
             await storeData('TBH', arrBaru);
             toast.show('Transaksi berhasil dihapus', {type: 'success'});
-            getTransaksi();
+            // PERBAIKAN: panggil getTransaksi dengan filter yang sedang aktif
+            getTransaksi(filter);
           } catch (error) {
             console.log(error);
             toast.show('Gagal menghapus transaksi', {type: 'danger'});
@@ -131,7 +264,28 @@ export default function Buah({navigation, route}) {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('BuahEdit', item)}>
+      <TouchableOpacity 
+        onPress={() => {
+          // PERBAIKAN: Pastikan semua data ter-pass dengan benar ke halaman edit
+          console.log('Data yang akan diedit:', item); // Debug log
+          navigation.navigate('BuahEdit', {
+            ...item, // Spread semua properti item
+            // Pastikan semua field ada
+            id: item.id,
+            tanggal: item.tanggal,
+            divisi: item.divisi,
+            komplek: item.komplek,
+            blok: item.blok,
+            mandor: item.mandor,
+            krani: item.krani,
+            pemanen: item.pemanen,
+            basis: item.basis,
+            tph: item.tph,
+            jjg: item.jjg,
+            mentah: item.mentah,
+          });
+        }}
+      >
         <Icon
           type="ionicon"
           name="create-outline"
@@ -151,8 +305,6 @@ export default function Buah({navigation, route}) {
       </TouchableOpacity>
     </View>
   );
-
-  const [filter, setFilter] = useState(moment().format('YYYY-MM-DD'));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -174,7 +326,7 @@ export default function Buah({navigation, route}) {
           ListEmptyComponent={
             !loading && (
               <Text style={styles.emptyText}>
-                Belum ada transaksi TBH yang tercatat.
+                Belum ada transaksi TBS yang tercatat.
               </Text>
             )
           }
@@ -243,7 +395,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   pemanenText: {
-    fontFamily: fonts.secondary[400],
+    fontFamily: fonts.secondary[700],
     fontSize: 13,
     color: colors.black,
   },
